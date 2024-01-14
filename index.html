@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RESTful_API</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+      integrity="sha512-b2QcS5SsA8tZodcDtGRELiGv5SaKSk1vDHDaQRda0htPYWZ6046lr3kJ5bAAQdpV2mmA/4v0wQF9MyU6/pDIAg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="./src/assets/styles/style.css" />
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.37/vue.global.js"></script> -->
+  </head>
+  <body>
+    <div id="app">
+      <div class="container">
+        <div class="row justify-content-center">
+          <h1 class="h3 mb-3 font-weight-normal">請先登入</h1>
+          <div class="col-8">
+            <form id="form" class="form-signin" @submit.prevent="handleLogin">
+              <div class="form-floating mb-3">
+                <input
+                  type="email"
+                  class="form-control"
+                  id="username"
+                  placeholder="name@example.com"
+                  required
+                  autofocus
+                  autocomplete="email"
+                  v-model="user.username"
+                />
+                <label for="username">Email address</label>
+              </div>
+              <div class="form-floating">
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  placeholder="Password"
+                  autocomplete="current-password"
+                  required
+                  v-model="user.password"
+                />
+                <label for="password">Password</label>
+              </div>
+              <button class="btn btn-lg btn-primary w-100 mt-3" type="submit">
+                登入
+              </button>
+            </form>
+          </div>
+        </div>
+        <p class="mt-5 mb-3 text-muted">&copy; 2021~∞ - 六角學院</p>
+      </div>
+    </div>
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
