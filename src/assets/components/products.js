@@ -25,8 +25,12 @@ const app = createApp({
   },
   methods: {
     async checkAdmin() {
-      await $http.post(path.check);
-      this.getProduct();
+      try {
+        await $http.post(path.check);
+        this.getProduct();
+      } catch (err) {
+        location.href = "index.html";
+      }
     },
     async getProduct() {
       const res = await $http.get(`${path.admin}/products`);

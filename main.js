@@ -6,11 +6,8 @@ const path = {
     product: "/product.html",
   },
   server: {
-    home: [
-      "/Vue-lesson2-RESTful_API-request/",
-      "/Vue-lesson2-RESTful_API-request/index.html",
-    ],
-    product: "/Vue-lesson2-RESTful_API-request/product.html",
+    home: ["/Vue-lesson3-vue-start/", "/Vue-lesson3-vue-start/index.html"],
+    product: "/Vue-lesson3-vue-start/product.html",
   },
 };
 
