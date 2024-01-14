@@ -29,6 +29,11 @@ const app = createApp({
         await $http.post(path.check);
         this.getProduct();
       } catch (err) {
+        Swal.fire({
+          icon: "error",
+          text: "請先登入",
+        });
+
         location.href = "index.html";
       }
     },
@@ -37,45 +42,57 @@ const app = createApp({
       this.productList = res.data.products;
     },
     async addProduct() {
-      const payload = { data: { ...this.tempProduct } };
-      this.loading("正在新增中，請稍後");
-      const res = await $http.post(`${path.admin}/product`, payload);
-      // console.log(res.data.message);
-      Swal.fire({
-        icon: "success",
-        text: res.data.message,
-      });
-      this.removeloading();
-      await this.getProduct();
-      this.closeModal();
+      try {
+        const payload = { data: { ...this.tempProduct } };
+        this.loading("正在新增中，請稍後");
+        const res = await $http.post(`${path.admin}/product`, payload);
+        // console.log(res.data.message);
+        Swal.fire({
+          icon: "success",
+          text: res.data.message,
+        });
+        this.removeloading();
+        await this.getProduct();
+        this.closeModal();
+      } catch (err) {
+        this.removeloading();
+      }
     },
     async editProduct() {
       // this.tempProduct在當時接受product shallow copy時將id更新至this.tempProduct
-      const { id } = this.tempProduct;
-      delete this.tempProduct.id;
-      const payload = { data: { ...this.tempProduct } };
-      this.loading("修改中，請稍後");
-      const res = await $http.put(`${path.admin}/product/${id}`, payload);
-      console.log(res.data.message);
-      Swal.fire({
-        icon: "success",
-        text: res.data.message,
-      });
-      this.removeloading();
-      await this.getProduct();
-      this.closeModal();
+      try {
+        const { id } = this.tempProduct;
+        delete this.tempProduct.id;
+        const payload = { data: { ...this.tempProduct } };
+        this.loading("修改中，請稍後");
+        const res = await $http.put(`${path.admin}/product/${id}`, payload);
+        Swal.fire({
+          icon: "success",
+          text: res.data.message,
+        });
+        this.removeloading();
+        await this.getProduct();
+        this.closeModal();
+      } catch (err) {
+        this.removeloading();
+      }
     },
     async deleteProduct() {
-      this.loading("刪除產品中，請稍後");
-      const { id } = this.tempProduct;
-      const res = await $http.delete(`${path.admin}/product/${id}`);
-      Swal.fire({
-        icon: "success",
-        text: res.data.message,
-      });
-      this.removeloading();
-      await this.getProduct();
-      delProductModal.hide();
+      try {
+        this.loading("刪除產品中，請稍後");
+        const { id } = this.tempProduct;
+        const res = await $http.delete(`${path.admin}/product/${id}`);
+        Swal.fire({
+          icon: "success",
+          text: res.data.message,
+        });
+        this.removeloading();
+        await this.getProduct();
+        delProductModal.hide();
+      } catch (err) {
+        this.removeloading();
+        delProductModal.hide();
+      }
     },
     deleteCheck(product) {
       this.tempProduct = { ...product };

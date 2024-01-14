@@ -45,6 +45,10 @@ $http.interceptors.response.use(
   },
   (err) => {
     console.log(err);
+    Swal.fire({
+      icon: "error",
+      text: err.response.data.message,
+    });
     return Promise.reject(
       `狀態碼${err.request.status} 錯誤訊息${err.response.data.message}`
     ); //必須回傳err，否則axios會拋出錯誤

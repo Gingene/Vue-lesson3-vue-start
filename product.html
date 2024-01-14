@@ -120,12 +120,12 @@
                     :key="key"
                   >
                     <div class="mb-3">
-                      <label :for="'image' + key" class="form-label"
-                        >圖片網址{{key}}</label
+                      <label :for="'image' + (key + 1)" class="form-label"
+                        >圖片網址{{key + 1}}</label
                       >
                       <input
                         type="text"
-                        :id="'image' + key"
+                        :id="'image' + (key + 1)"
                         class="form-control"
                         placeholder="請輸入圖片連結"
                         v-model="tempProduct.imagesUrl[key]"
