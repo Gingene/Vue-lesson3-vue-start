@@ -41,38 +41,30 @@ const app = createApp({
       const res = await $http.get(`${path.admin}/products`);
       this.productList = res.data.products;
     },
-    async addProduct() {
+    async updateProduct() {
       try {
+        let url = `${path.admin}/product`;
+        let http = "post";
+
+        if (this.productModalTitle !== "新增產品") {
+          url = `${path.admin}/product/${this.tempProduct.id}`;
+          http = "put";
+        }
+
         const payload = { data: { ...this.tempProduct } };
-        this.loading("正在新增中，請稍後");
-        const res = await $http.post(`${path.admin}/product`, payload);
-        // console.log(res.data.message);
+        this.loading(
+          this.productModalTitle === "新增產品"
+            ? "正在新增中，請稍後"
+            : "修改中，請稍後"
+        );
+        const res = await $http[http](url, payload);
         Swal.fire({
           icon: "success",
           text: res.data.message,
         });
-        this.removeloading();
-        await this.getProduct();
         this.closeModal();
-      } catch (err) {
-        this.removeloading();
-      }
-    },
-    async editProduct() {
-      // this.tempProduct在當時接受product shallow copy時將id更新至this.tempProduct
-      try {
-        const { id } = this.tempProduct;
-        delete this.tempProduct.id;
-        const payload = { data: { ...this.tempProduct } };
-        this.loading("修改中，請稍後");
-        const res = await $http.put(`${path.admin}/product/${id}`, payload);
-        Swal.fire({
-          icon: "success",
-          text: res.data.message,
-        });
-        this.removeloading();
         await this.getProduct();
-        this.closeModal();
+        this.removeloading();
       } catch (err) {
         this.removeloading();
       }
@@ -97,13 +89,6 @@ const app = createApp({
     deleteCheck(product) {
       this.tempProduct = { ...product };
       delProductModal.show();
-    },
-    handleUpdateProduct() {
-      if (this.productModalTitle === "新增產品") {
-        this.addProduct();
-      } else {
-        this.editProduct();
-      }
     },
     handleErrorImageUrl() {
       // this.imageError = "錯誤連結";
