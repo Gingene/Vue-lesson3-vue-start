@@ -63,39 +63,31 @@ const app = createApp({
         imagesUrl: [""],
       };
     };
-    const addProduct = async () => {
-      try {
-        const payload = { data: { ...tempProduct.value } };
-        loading("正在新增中，請稍後");
-        const res = await $http.post(`${path.admin}/product`, payload);
-        // console.log(res.data.message);
-        Swal.fire({
-          icon: "success",
-          text: res.data.message,
-        });
-        removeloading();
-        await getProduct();
-        closeModal();
-      } catch (err) {
-        removeloading();
-      }
-    };
 
-    const editProduct = async () => {
-      // tempProduct在當時接受product shallow copy時將id更新至this.tempProduct
+    const updateProduct = async () => {
       try {
-        const { id } = tempProduct.value;
-        delete tempProduct.id;
+        let url = `${path.admin}/product`;
+        let http = "post";
+
+        if (productModalTitle.value !== "新增產品") {
+          url = `${path.admin}/product/${tempProduct.value.id}`;
+          http = "put";
+        }
+
         const payload = { data: { ...tempProduct.value } };
-        loading("修改中，請稍後");
-        const res = await $http.put(`${path.admin}/product/${id}`, payload);
+        loading(
+          productModalTitle === "新增產品"
+            ? "正在新增中，請稍後"
+            : "修改中，請稍後"
+        );
+        const res = await $http[http](url, payload);
         Swal.fire({
           icon: "success",
           text: res.data.message,
         });
-        removeloading();
-        await getProduct();
         closeModal();
+        await getProduct();
+        removeloading();
       } catch (err) {
         removeloading();
       }
@@ -123,22 +115,13 @@ const app = createApp({
       checkAdmin,
       resetProduct,
       getProduct,
-      addProduct,
-      editProduct,
+      updateProduct,
       deleteProduct,
     };
     // Dom
     const deleteCheck = (product) => {
       tempProduct.value = { ...product };
       delBsProductModal.show();
-    };
-
-    const handleUpdateProduct = () => {
-      if (productModalTitle.value === "新增產品") {
-        addProduct();
-      } else {
-        editProduct();
-      }
     };
 
     const handleErrorImageUrl = () => {
@@ -148,7 +131,6 @@ const app = createApp({
     };
     const domMethods = {
       deleteCheck,
-      handleUpdateProduct,
       handleErrorImageUrl,
     };
 
