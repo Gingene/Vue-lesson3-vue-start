@@ -76,7 +76,7 @@ const app = createApp({
 
         const payload = { data: { ...tempProduct.value } };
         loading(
-          productModalTitle === "新增產品"
+          productModalTitle.value === "新增產品"
             ? "正在新增中，請稍後"
             : "修改中，請稍後"
         );
